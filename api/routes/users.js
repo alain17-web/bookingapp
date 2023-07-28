@@ -4,7 +4,7 @@ import { verifyAdmin, verifyToken, verifyUser } from "../utils/verifyToken.js"
 
 const router = express.Router()
 
-/* router.get("/checkauthentication",verifyToken, (req,res,next) => {
+ /* router.get("/checkauthentication",verifyToken, (req,res,next) => {
    res.send("hello user, you are logged in") 
 })
 
@@ -14,7 +14,7 @@ router.get("/checkuser/:id",verifyUser, (req,res,next) => {
 
  router.get("/checkadmin/:id",verifyAdmin, (req,res,next) => {
     res.send("hello admin, you are logged in and you can manage all accounts") 
- }) */
+ })  */
 
 //UPDATE
 router.put("/:id", verifyUser, updateUser)

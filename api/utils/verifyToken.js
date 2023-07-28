@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken"
-import { createError } from "./error.js"
+import { createError } from "../utils/error.js"
 
 export const verifyToken = (req,res,next)=> {
     const token = req.cookies.access_token
@@ -18,7 +18,7 @@ export const verifyUser = (req,res,next)=> {
         if(req.user.id === req.params.id || req.user.isAdmin){
             next()
         } else {
-            if(err) return next(createError(403, "You are not authorized"))
+            return next(createError(403, "You are not authorized"))
         }
     })
 }
