@@ -1,12 +1,14 @@
 import "./header.css"
 import { faBed,faCalendarDays, faCar, faMountainCity, faPerson, faPlane, faTaxi } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { useState } from "react"
+import { useContext, useState } from "react"
 import { DateRange } from "react-date-range"
 import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
 import { format } from "date-fns"
 import { useNavigate } from "react-router-dom"
+import { SearchContext } from "../../context/SearchContext"
+import { AuthContext } from "../../context/AuthContext"
 
 
 const Header = ({ type }) => {
@@ -21,8 +23,9 @@ const Header = ({ type }) => {
     })
 
     const navigate = useNavigate()
+    const { user } = useContext(AuthContext)
 
-    const [date, setDate] = useState([
+    const [dates, setDates] = useState([
         {
             startDate: new Date(),
             endDate: new Date(),
@@ -38,8 +41,11 @@ const Header = ({ type }) => {
         })
     }
 
+    const {dispatch} = useContext(SearchContext)
+
     const handleSearch = () => {
-        navigate("/hotels",{ state: {destination, date, options}})
+        dispatch({type: "NEW_SEARCH", payload:{ destination, dates, options }})
+        navigate("/hotels",{ state: {destination, dates, options}})
     }
 
     return (
@@ -71,7 +77,7 @@ const Header = ({ type }) => {
                     <>
                         <h1 className="headerTitle">A lifetime of discounts? It's Genius.</h1>
                         <p className="headerDesc">Get rewarded for your travels ! Unlock instant savings of 10% or more with a free Booking.com account</p>
-                        <button className="headerButton">Sign in / Register</button>
+                        {!user && <button className="headerButton">Sign in / Register</button>}
                         <div className="headerSearch">
                             <div className="headerSearchItem">
                                 <FontAwesomeIcon icon={faBed} className="headerIcon" />
@@ -84,13 +90,13 @@ const Header = ({ type }) => {
                             <div className="headerSearchItem">
                                 <FontAwesomeIcon icon={faCalendarDays} className="headerIcon" />
                                 <span onClick={() => setOpenDate(!openDate)}
-                                    className="headerSearchText">{`${format(date[0].startDate, "dd/MM/yyyy")} to ${format(date[0].endDate, "dd/MM/yyyy")} `}</span>
+                                    className="headerSearchText">{`${format(dates[0].startDate, "dd/MM/yyyy")} to ${format(dates[0].endDate, "dd/MM/yyyy")} `}</span>
                                 {openDate && <DateRange
                                     editableDateInputs={true}
-                                    onChange={item => setDate([item.selection])}
+                                    onChange={item => setDates([item.selection])}
                                     minDate={new Date()}
                                     moveRangeOnFirstSelection={false}
-                                    ranges={date}
+                                    ranges={dates}
                                     className="date"
                                 />}
                             </div>

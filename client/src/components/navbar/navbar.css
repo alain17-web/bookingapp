@@ -26,3 +26,12 @@
    cursor: pointer;
    color: #003580;
 }
+
+.logout{
+   background-color: #febb02;
+   color: black;
+   padding: 5px;
+   border: 1px solid black;
+   border-radius: 9px;
+   cursor: pointer;
+}

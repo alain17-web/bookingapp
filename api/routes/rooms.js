@@ -1,5 +1,5 @@
 import express from "express"
-import { createRoom,updateRoom,deleteRoom,getRoom,getRooms } from "../controllers/roomControllers.js"
+import { createRoom,updateRoom,deleteRoom,getRoom,getRooms, updateRoomAvailability } from "../controllers/roomControllers.js"
 import Room from "../models/Room.js"
 import { verifyAdmin } from "../utils/verifyToken.js"
 
@@ -11,6 +11,9 @@ router.post("/:hotelid",verifyAdmin, createRoom)
 
 //UPDATE
 router.put("/:id",verifyAdmin, updateRoom)
+
+router.put("/availability/:id", updateRoomAvailability)
+
 
 //DELETE
 router.delete("/:id/:hotelid",verifyAdmin, deleteRoom)

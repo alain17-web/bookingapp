@@ -21,7 +21,7 @@ export const createRoom = async (req, res, next) => {
     }
 }
 
-//UPDATE
+//UPDATE && UPDATE ROOM AVAILABILITY
 export const updateRoom = async (req, res, next) => {
     try {
         const updatedRoom = await Room.findByIdAndUpdate(req.params.id,
@@ -29,6 +29,23 @@ export const updateRoom = async (req, res, next) => {
             { $new: true }
         )
         res.status(200).json(updatedRoom)
+    } catch (err) {
+        next(err)
+    }
+}
+
+export const updateRoomAvailability = async (req, res, next) => {
+    try {
+        await Room.updateOne(
+            { "roomNumbers._id": req.params.id },
+            {
+                $push: {
+                    "roomNumbers.$.unavailableDtes": req.body.dates
+                }
+            }
+        )
+
+        res.status(200).json("Room status has been updated")
     } catch (err) {
         next(err)
     }
